@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require("uuid");
 const TokenGenerator = require("uuid-token-generator");
 const tokenGen = new TokenGenerator(TokenGenerator.BASE62);
 const { btoa, atob } = require("b2a");
-
+const { user } = require("../models");
 exports.signUp = (req, res) => {
   const { userid, firstName, lastName, email, password, contact } = req.body;
   if (!firstName || !lastName || !email || !password || !contact) {
@@ -97,4 +97,49 @@ exports.logout = (req, res) => {
       console.log("error", e);
       res.status(500).send({ message: "something went wrong. Try again" });
     });
+};
+
+exports.getCoupon = (req, res) => {
+  const userid = req.body.userid;
+  if (!userid) {
+    res.status(400).send({ message: "Please provide the user id" });
+    return;
+  }
+  User.findOne({ userid: userid })
+    .select("coupens")
+    .then((data) => {
+      data === null
+        ? res.send(404).send({ message: "You dont have any coupens" })
+        : res.send(data);
+    })
+    .catch((err) =>
+      res.status().send({ message: "Something went wrong", error: e.message })
+    );
+};
+
+exports.bookShow = (req, res) => {
+  const { userid, bookingrequests } = req.body;
+  if (!userid || !bookingrequests) {
+    res
+      .status(400)
+      .send({ message: "Provide the userid and booking requests" });
+    return;
+  }
+  User.findOne({ userid: userid })
+    .then((user) => {
+      if (user === null) {
+        res.status(400).send({ message: "No such user" });
+      } else {
+        user.bookingrequests.push(bookingrequests);
+        user
+          .findOneAndUpdate({ userid: userid }, user, { new: true })
+          .then((user) => res.send(user.bookingrequests))
+          .catch((e) =>
+            res.status(500).send({ message: "Somthing went wrong", error: e })
+          );
+      }
+    })
+    .catch((e) =>
+      res.status(500).send({ message: "Somthing went wrong", error: e })
+    );
 };
