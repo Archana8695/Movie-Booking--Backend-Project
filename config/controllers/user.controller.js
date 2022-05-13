@@ -5,28 +5,41 @@ const tokenGen = new TokenGenerator(TokenGenerator.BASE62);
 const { btoa, atob } = require("b2a");
 const { user } = require("../models");
 exports.signUp = (req, res) => {
-  const { userid, firstName, lastName, email, password, contact } = req.body;
-  if (!firstName || !lastName || !email || !password || !contact) {
+  const {
+    userid,
+    first_name,
+    last_name,
+    email_address,
+    password,
+    mobile_number,
+  } = req.body;
+  if (
+    !first_name ||
+    !last_name ||
+    !email_address ||
+    !password ||
+    !mobile_number
+  ) {
     res.status(400).send({
       message: "Please provide the required details to create an account",
     });
     return;
   }
-  const userName = firstName + lastName;
+  const userName = first_name + last_name;
   const passwordHash = btoa(password);
   const token = tokenGen.generate();
   const uuid = uuidv4();
 
-  User.findOne({ email: email }, (err, user) => {
+  User.findOne({ email: email_address }, (err, user) => {
     if (!err && user === null) {
       // create a user
       const newUser = new User({
         userid: userid,
         username: userName,
-        email: email,
-        first_name: firstName,
-        last_name: lastName,
-        contact: contact,
+        email: email_address,
+        first_name: first_name,
+        last_name: last_name,
+        contact: mobile_number,
         password: passwordHash,
         uuid: uuid,
         role: req.body.role ? req.body.role : "user",
@@ -72,18 +85,18 @@ exports.login = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  const { userid } = req.body;
-  if (!userid) {
-    res.status(400).send({ message: "provide the userid of the user" });
+  const { uuid } = req.body;
+  if (!uuid) {
+    res.status(400).send({ message: "provide the uuid of the user" });
     return;
   }
-  User.findOne({ userid: userid })
+  User.findOne({ uuid: uuid })
     .then((user) => {
       if (user === null) {
         res.status(401).send({ message: "user id doesnt exist" });
       } else {
         user.isLoggedIn = false;
-        User.findOneAndUpdate({ userid: userid }, user, { new: true })
+        User.findOneAndUpdate({ userid: uuid }, user, { new: true })
           .then((data) => res.send(data))
           .catch((e) => {
             console.log("error", e);
@@ -142,4 +155,7 @@ exports.bookShow = (req, res) => {
     .catch((e) =>
       res.status(500).send({ message: "Somthing went wrong", error: e })
     );
+};
+exports.bookings = (req, res) => {
+  // const {uuid} = req.
 };
