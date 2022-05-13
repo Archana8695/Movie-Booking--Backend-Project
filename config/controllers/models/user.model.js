@@ -10,7 +10,10 @@ module.exports = (mongoose) => {
         contact: String,
         password: String,
         role: String,
-        isLoggedIn: Boolean,
+        isLoggedIn: {
+          type: Boolean,
+        default: false,
+      },
         uuid: String,
         accesstoken: String,
         coupens: [
@@ -29,4 +32,5 @@ module.exports = (mongoose) => {
         ],
       })
     );
+    return Users;
   };
