@@ -16,18 +16,18 @@ exports.findAllMovies = (req, res) => {
     movie
       .find({})
       .then((data) => {
-        res.json({ data: data });
+        res.json(data);
       })
       .catch((e) => res.send({ message: "Couldnt find the movies" + e }));
   } else if (status === "PUBLISHED") {
     movie
       .find({ published: true })
-      .then((data) => res.send({ data: data }))
+      .then((data) => res.send({ monies: data }))
       .catch((e) => res.send({ message: "Couldnt find the movies" + e }));
   } else if (status === "RELEASED") {
     movie
       .find({ released: true })
-      .then((data) => res.send({ data: data }))
+      .then((data) => res.send({ movies: data }))
       .catch((e) => res.send({ message: "Couldnt find the movies" + e }));
   } else {
     res.status(400).send({ message: "invalid query string" });
