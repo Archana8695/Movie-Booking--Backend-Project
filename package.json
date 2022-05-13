@@ -1,18 +1,26 @@
 {
-    "name": "moviebooking",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-      "body-parser": "^1.20.0",
-      "cors": "^2.8.5",
-      "express": "^4.18.1",
-      "mongoose": "^6.3.2"
-  }
+  "name": "moviebooking",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "mongoose": "^6.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Archana8695/Movie-Booking--Backend-Project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Archana8695/Movie-Booking--Backend-Project/issues"
+  },
+  "homepage": "https://github.com/Archana8695/Movie-Booking--Backend-Project#readme",
+  "description": ""
 }
